@@ -1,1 +1,16 @@
 
+from sklearn.metrics import roc_curve, precision_recall_curve, auc
+
+# Assuming y_true contains the true labels and y_pred contains the predicted probabilities
+fpr, tpr, thresholds_roc = roc_curve(y_true, y_pred)
+precision, recall, thresholds_pr = precision_recall_curve(y_true, y_pred)
+
+# Find the optimal threshold based on ROC curve
+optimal_threshold_roc = thresholds_roc[np.argmax(tpr - fpr)]
+
+# Find the optimal threshold based on PR curve
+optimal_threshold_pr = thresholds_pr[np.argmax(precision + recall)]
+
+# Use the optimal threshold to convert probabilities to binary predictions
+binary_predictions_roc = (y_pred >= optimal_threshold_roc).astype(int)
+binary_predictions_pr = (y_pred >= optimal_threshold_pr).astype(int)
