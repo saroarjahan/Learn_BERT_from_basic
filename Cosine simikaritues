@@ -1,0 +1,24 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Assuming you have two lists of embeddings
+list_of_100_embeddings = [...]  # Shape: (100, embedding_dimension)
+list_of_20k_embeddings = [...]  # Shape: (20000, embedding_dimension)
+
+# Function to find the top 3 similar embeddings for each of the 100 embeddings
+def find_top_similar_embeddings():
+    top_similar_indices = []
+    for emb_100 in list_of_100_embeddings:
+        # Calculate cosine similarity between emb_100 and all embeddings in list_of_20k_embeddings
+        similarities = cosine_similarity(emb_100.reshape(1, -1), list_of_20k_embeddings)
+        # Get the indices of the top 3 most similar embeddings
+        top_indices = np.argsort(similarities[0])[::-1][:3]
+        top_similar_indices.append(top_indices)
+    return top_similar_indices
+
+# Finding the top 3 similar embeddings for each of the 100 embeddings
+top_similar_indices = find_top_similar_embeddings()
+
+# Print the results
+for i, indices in enumerate(top_similar_indices):
+    print(f"Top 3 embeddings similar to embedding {i + 1}: {indices}")
